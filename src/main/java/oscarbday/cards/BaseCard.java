@@ -1,14 +1,15 @@
-package basicmod.cards;
+package oscarbday.cards;
 
 import basemod.abstracts.CustomCard;
-import basicmod.BasicMod;
-import basicmod.util.CardInfo;
+import oscarbday.BasicMod;
+import oscarbday.util.CardInfo;
+
+import static oscarbday.BasicMod.makeID;
+import static oscarbday.util.TextureLoader.getCardTextureString;
+
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.CardStrings;
-
-import static basicmod.BasicMod.makeID;
-import static basicmod.util.TextureLoader.getCardTextureString;
 
 
 public abstract class BaseCard extends CustomCard {

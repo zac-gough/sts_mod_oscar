@@ -1,12 +1,15 @@
-package basicmod;
+package oscarbday;
 
 import basemod.BaseMod;
+import basemod.interfaces.EditCharactersSubscriber;
 import basemod.interfaces.EditKeywordsSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
-import basicmod.util.GeneralUtils;
-import basicmod.util.KeywordInfo;
-import basicmod.util.TextureLoader;
+import oscarbday.character.Oscar;
+import oscarbday.util.GeneralUtils;
+import oscarbday.util.KeywordInfo;
+import oscarbday.util.TextureLoader;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -20,6 +23,7 @@ import com.megacrit.cardcrawl.localization.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.scannotation.AnnotationDB;
+import com.badlogic.gdx.graphics.Color;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -31,12 +35,28 @@ import java.util.Set;
 public class BasicMod implements
         EditStringsSubscriber,
         EditKeywordsSubscriber,
-        PostInitializeSubscriber {
+        PostInitializeSubscriber,
+        EditCharactersSubscriber {
     public static ModInfo info;
     public static String modID; //Edit your pom.xml to change this
     static { loadModInfo(); }
     public static final Logger logger = LogManager.getLogger(modID); //Used to output to the console.
     private static final String resourcesFolder = "basicmod";
+
+    private static final String BG_ATTACK = characterPath("cardback/bg_attack.png");
+    private static final String BG_ATTACK_P = characterPath("cardback/bg_attack_p.png");
+    private static final String BG_SKILL = characterPath("cardback/bg_skill.png");
+    private static final String BG_SKILL_P = characterPath("cardback/bg_skill_p.png");
+    private static final String BG_POWER = characterPath("cardback/bg_power.png");
+    private static final String BG_POWER_P = characterPath("cardback/bg_power_p.png");
+    private static final String ENERGY_ORB = characterPath("cardback/energy_orb.png");
+    private static final String ENERGY_ORB_P = characterPath("cardback/energy_orb_p.png");
+    private static final String SMALL_ORB = characterPath("cardback/small_orb.png");
+
+    private static final String CHAR_SELECT_BUTTON = characterPath("select/button.png");
+    private static final String CHAR_SELECT_PORTRAIT = characterPath("select/portrait.png");
+
+    private static final Color cardColor = new Color(23f/255f, 8f/255f,  208f/255f, 1f);
 
     //This is used to prefix the IDs of various objects like cards and relics,
     //to avoid conflicts between different mods using the same name for things.
@@ -47,6 +67,11 @@ public class BasicMod implements
     //This will be called by ModTheSpire because of the @SpireInitializer annotation at the top of the class.
     public static void initialize() {
         new BasicMod();
+
+        BaseMod.addColor(Oscar.Enums.CARD_COLOR, cardColor, BG_ATTACK, BG_SKILL, BG_POWER, ENERGY_ORB,
+        BG_ATTACK_P, BG_SKILL_P, BG_POWER_P, ENERGY_ORB_P,
+        SMALL_ORB);
+        
     }
 
     public BasicMod() {
@@ -178,4 +203,10 @@ public class BasicMod implements
             throw new RuntimeException("Failed to determine mod info/ID based on initializer.");
         }
     }
+
+	@Override
+	public void receiveEditCharacters() {
+		BaseMod.addCharacter(new Oscar(),
+                CHAR_SELECT_BUTTON, CHAR_SELECT_PORTRAIT, Oscar.Enums.YOUR_CHARACTER);
+	}
 }
